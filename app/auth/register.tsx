@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   TextInput,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "@/constants/Colors";
@@ -106,6 +107,12 @@ const register = () => {
           <Text style={styles.btnText}>Continue</Text>
           {loading && <ActivityIndicator size="small" color="white" />}
         </Pressable>
+        <Text style={{ justifyContent: "center", alignItems: "center" }}>
+          All ready have an
+          <Pressable onPress={() => router.push("/auth/login")}>
+            <Text style={styles.link}>account ?</Text>
+          </Pressable>
+        </Text>
       </View>
     </KeyboardAvoidingView>
   );

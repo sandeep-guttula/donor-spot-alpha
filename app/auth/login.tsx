@@ -41,31 +41,39 @@ const login = () => {
 
   const handleSignIn = async () => {
     try {
+      setLoading(true);
+      console.log("Sign In");
+
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+
+      if (!userCredential.user.uid) {
+        console.log("User not created");
+        return;
+      }
       if (userCredential.user.uid) {
         const response = await getUserDataThroughFirebaseUid(
           userCredential.user.uid
         );
 
-        setPhoneNumber(response?.phoneNumber);
-        setFirebaseUID(response?.firebaseUID);
-        setUserId(response?.uid);
+        console.log("Response", response);
+
+        setPhoneNumber(response?.phone);
+        setFirebaseUID(userCredential.user.uid);
+        setUserId(response?.id);
         setUserName(response?.fullName);
         setUserEmail(response?.email);
         setUserAge(response?.age);
         setUserGender(response?.gender);
         setUserBloodType(response?.bloodType);
-        setUserCity(response?.city);
-        setUserPinCode(response?.pinCode);
+        setUserCity(response?.address?.city);
+        setUserPinCode(response?.address?.pincode);
         setActiveForDonation(response?.activeForDonation);
         setUserAvatar(response?.avatar);
-
-        console.log(user);
-
+        setLoading(false);
         router.push("/(tabs)");
       }
     } catch (error) {
@@ -115,6 +123,12 @@ const login = () => {
           <Text style={styles.btnText}>Login</Text>
           {loading && <ActivityIndicator size="small" color="white" />}
         </Pressable>
+        <Text style={{ justifyContent: "center", alignItems: "center" }}>
+          Create new
+          <Pressable onPress={() => router.push("/auth/register")}>
+            <Text style={styles.link}>account ?</Text>
+          </Pressable>
+        </Text>
       </View>
     </KeyboardAvoidingView>
   );

@@ -14,6 +14,7 @@ const getUserByFirebaseUid = `
 query FindUserByFirebaseUID($firebaseUid: String) {
   findUserByFirebaseUID(firebaseUID: $firebaseUid) {
     activeForDonation
+    phone
     address {
       city
       pincode
