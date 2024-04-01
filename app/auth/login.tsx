@@ -37,6 +37,7 @@ const login = () => {
   const setActiveForDonation = useUserStore(
     (state) => state.setActiveForDonation
   );
+  const setUserCoords = useUserStore((state) => state.setUserCoords);
   const user = useUserStore((state) => state.user);
 
   const handleSignIn = async () => {
@@ -74,6 +75,10 @@ const login = () => {
         setActiveForDonation(response?.activeForDonation);
         setUserAvatar(response?.avatar);
         setLoading(false);
+        setUserCoords({
+          lat: response?.coords?.lat,
+          lng: response?.coords?.lng,
+        });
         router.push("/(tabs)");
       }
     } catch (error) {

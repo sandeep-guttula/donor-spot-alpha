@@ -9,7 +9,9 @@ const colors = {
   textGray: "#b9b9b9",
   green: "#8ddf40",
   cardBackground: "#F0F1F1",
-  textDarkGray: "#525159"
+  textDarkGray: "#525159",
+  emeraldGreen: "#50C878"
+
 }
 
 

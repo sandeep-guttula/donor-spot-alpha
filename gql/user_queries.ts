@@ -26,6 +26,10 @@ query FindUserByFirebaseUID($firebaseUid: String) {
     id
     fullName
     gender
+    coords {
+      lat
+      lng
+    }
   }
 }
 `
@@ -54,6 +58,35 @@ const updateActiveForDonationQuery = `
 }
 `
 
+const updateUserCoordsQuery = `
+mutation AddUserCoords($id: ID!, $lat: String!, $lng: String!) {
+  addUserCoords(id: $id, lat: $lat, lng: $lng) {
+    id
+    fullName
+    coords {
+      lat
+      lng
+    }
+  }
+}
+`
+
+const getALlUsersCoordsQuery = `
+  query RootQueryType {
+    users {
+      id
+      firebaseUID
+      fullName
+      bloodType
+      activeForDonation
+      coords {
+        lat
+        lng
+      }
+    }
+  }
+`
+
 const getUsersName = `
   query Users {
     users {
@@ -61,6 +94,8 @@ const getUsersName = `
     }
   }
 `
+
+
 
 async function getUserDataThroughFirebaseUid(firebaseUid: string) {
   const response = await fetch(GQL_ENDPOINT, {
@@ -76,7 +111,7 @@ async function getUserDataThroughFirebaseUid(firebaseUid: string) {
     })
   })
   let { data } = await response.json();
-
+  
   return data.findUserByFirebaseUID
 }
 
@@ -168,4 +203,46 @@ async function updateActiveForDonation(id: string, activeForDonation: boolean) {
   return data.updateActiveForDonation
 }
 
-export { isUserExist, addUser, getUserDataThroughFirebaseUid, updateActiveForDonation }
+async function updateUserCoords(id: string, lat: string, lng: string) {
+  const response = await fetch(GQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: updateUserCoordsQuery,
+      variables: {
+        id: id,
+        lat: lat,
+        lng: lng,
+      }
+    })
+  })
+  let { data } = await response.json();
+  console.log("Data from updateUserCoords", data);
+  
+  return data.addUserCoords
+}
+
+async function getAllUsersCoords() {
+  const response = await fetch(GQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: getALlUsersCoordsQuery
+    })
+  })
+  let { data } = await response.json();
+  return data.users
+}
+
+export { 
+  isUserExist,
+  addUser, 
+  getUserDataThroughFirebaseUid, 
+  updateActiveForDonation,
+  updateUserCoords,
+  getAllUsersCoords
+}

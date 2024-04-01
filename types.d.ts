@@ -8,14 +8,16 @@ export type User  = {
     bloodType: string;
     activeForDonation: boolean;
     gender: string;
-    coords?: {
-        lat: number;
-        lng: number;
-    };
+    coords?: Coords;
     address:{
         city: string;
         zip: string;
     },
     avatar: string;
     token: string;
+}
+
+export type Coords = {
+    lat: string;
+    lng: string;
 }

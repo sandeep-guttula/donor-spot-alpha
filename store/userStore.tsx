@@ -17,6 +17,7 @@ export type UserStore = {
   setUserPinCode: (pinCode: string) => void;
   setActiveForDonation: (activeForDonation: boolean) => void;
   setUserAvatar: (avatar: string) => void;
+  setUserCoords: (coords: { lat: number; lng: number }) => void;
 };
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -128,6 +129,14 @@ export const useUserStore = create<UserStore>((set) => ({
       user: {
         ...state.user!,
         avatar,
+      },
+    }));
+  },
+  setUserCoords: (coords: { lat: number; lng: number }) => {
+    set((state) => ({
+      user: {
+        ...state.user!,
+        coords,
       },
     }));
   },
