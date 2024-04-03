@@ -78,7 +78,7 @@ const register = () => {
       <View>
         <Image
           style={styles.imageStyle}
-          source={require("@/assets/images/yoga.png")}
+          source={require("@/assets/images/lifesavers.png")}
         />
       </View>
       <View style={styles.form}>

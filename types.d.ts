@@ -1,4 +1,4 @@
-export type User  = {
+export type User = {
     id: string;
     firebaseUID: string;
     email: string;
@@ -9,7 +9,7 @@ export type User  = {
     activeForDonation: boolean;
     gender: string;
     coords?: Coords;
-    address:{
+    address: {
         city: string;
         zip: string;
     },
@@ -20,4 +20,36 @@ export type User  = {
 export type Coords = {
     lat: string;
     lng: string;
+}
+
+
+export type RequestInArea = {
+    id: string;
+    userId: string;
+    bloodType: string;
+    city: string;
+    donationDate: string;
+    donationType: string;
+}
+
+export type RequestInAreaUserType = {
+    avatar: string;
+    fullName: string;
+    id: string;
+}
+
+export type RequestForYouType = {
+    userId: string;
+    receiverId: string;
+    id: string;
+    donationType: string;
+    donationDate: string;
+    bloodType: string;
+    status: string;
+}
+
+export type RequestForYouUserType = {
+    id: string;
+    avatar: string;
+    fullName: string;
 }
