@@ -19,6 +19,8 @@ import { SafeAreaView } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { updateActiveForDonation } from "@/gql/user_queries";
 import RequestCard from "@/components/RequestCard";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
+
 
 export default function TabOneScreen() {
   const user = useUserStore((state) => state.user);
@@ -109,7 +111,7 @@ export default function TabOneScreen() {
             Be a lifeline: donate blood today
           </Text>
           <Pressable
-            onPress={() => router.push("/auth/register")}
+            onPress={() => router.push("/auth/new-user/verify")}
             style={[onBoardingStyles.buttonStyle]}
           >
             <Text style={onBoardingStyles.btnText}>Get Stated</Text>
@@ -202,19 +204,16 @@ const styles = StyleSheet.create({
 
 const onBoardingStyles = StyleSheet.create({
   container: {
-    // justifyContent: "center",
-    paddingTop: 60,
-    alignItems: "center",
+    height: "100%",
     justifyContent: "space-around",
     color: "black",
-    height: "100%",
   },
   imageStyle: {
-    width: 420,
-    height: 420,
+    width: wp("100%"),
+    height: hp("50%"),
   },
   header: {
-    fontSize: 35,
+    fontSize: hp("5%"),
     fontWeight: "bold",
   },
   textContainer: {
@@ -222,12 +221,12 @@ const onBoardingStyles = StyleSheet.create({
     gap: 20,
   },
   subText: {
-    fontSize: 20,
+    fontSize: hp("2.5%"),
     color: "gray",
   },
   buttonStyle: {
     backgroundColor: colors.primary,
-    width: 360,
+    width: wp("85%"),
     height: 50,
     borderRadius: 10,
     justifyContent: "center",

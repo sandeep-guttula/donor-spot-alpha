@@ -22,6 +22,8 @@ import { getUserDataThroughFirebaseUid, isUserExist } from "@/gql/user_queries";
 import { router } from "expo-router";
 import { useUserStore } from "@/store/userStore";
 import { auth } from "@/fb";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const register = () => {
   const [email, setEmail] = useState("");
@@ -122,8 +124,8 @@ export default register;
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
-    // justifyContent: "center",
     alignItems: "center",
     width: "100%",
     backgroundColor: "white",
@@ -136,8 +138,8 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     marginTop: 20,
-    width: 400,
-    height: 370,
+    width: wp('100%'),
+    height: hp('40%'),
   },
   link: {
     color: colors.linkBlue,
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 20,
     width: "85%",
-    gap: 20,
+    gap: hp('1.5%'),
   },
   inputContainer: {
     justifyContent: "center",
@@ -155,12 +157,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   input: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: wp('3%'),
+    paddingHorizontal: wp('5%'),
     borderRadius: 7,
     borderColor: "gray",
     borderWidth: 0.5,
-    width: "100%",
+    width: wp('85%'),
   },
   inputText: {
     fontWeight: "800",
@@ -171,9 +173,9 @@ const styles = StyleSheet.create({
 
   buttonStyle: {
     backgroundColor: colors.primary,
-    // width: "85%",
+    width: wp('85%'),
     flexDirection: "row",
-    height: 50,
+    height: hp('6.5%'),
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -186,12 +188,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   heading: {
-    fontSize: 40,
+    fontSize: hp('4%'),
     fontWeight: "bold",
     color: colors.textGray,
   },
   subHeading: {
-    fontSize: 30,
+    fontSize: hp('3%'),
     color: colors.textGray,
     fontWeight: "bold",
   },
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   subHeadingText: {
-    fontSize: 30,
+    fontSize: hp('3%'),
     color: colors.textPrimary,
     fontWeight: "bold",
   },
