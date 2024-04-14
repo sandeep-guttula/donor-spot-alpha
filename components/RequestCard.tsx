@@ -2,6 +2,8 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors } from "@/constants/Colors";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Avatar, AvatarBadge, AvatarFallbackText, Badge, BadgeText } from '@gluestack-ui/themed';
+import { useUserStore } from "@/store/userStore";
 
 export type RequestCardProps = {
   id: string;
@@ -12,61 +14,73 @@ export type RequestCardProps = {
   fullName: string;
   avatar: string;
   donationType: string;
+  
 }
 
 const RequestCard = ( 
   { id, userId, bloodType, city, donationDate, fullName, avatar, donationType }: RequestCardProps
  ) => {
-
-  console.log(
-    "id, userId, bloodType, city, donationDate, fullName, avatar, donationType",
-    id,
-    userId,
-    bloodType,
-    city,
-    donationDate,
-    fullName,
-    avatar,
-    donationType
-  );
   
+
+  const user = useUserStore((state) => state.user);
 
   return (
     <View style={styles.container}>
       <View style={styles.dateContainer}>
+        {
+          userId === user?.id && (
+            <Badge size="md" variant="solid" borderRadius="$none" action="success">
+              <BadgeText>You</BadgeText>
+            </Badge>
+          )
+        }
         <Text>Date: 03-04-2024</Text>
       </View>
       <View style={styles.profileContainer}>
-        <Image
+        {/* <Image
           style={styles.image}
           source={{
-            uri: "https://avatar.iran.liara.run/public/boy?username=Ash",
+            uri: `${avatar}`,
           }}
-        />
-        <Text style={styles.nameText}>Sandeep Guttula</Text>
+        /> */}
+
+        <Avatar size="md" bgColor="$amber600" >
+          <AvatarFallbackText>{fullName}</AvatarFallbackText>
+          <AvatarBadge $dark-borderColor="#000" />
+        </Avatar>
+        <Text style={styles.nameText}>{fullName}</Text>
+
       </View>
       <View style={styles.rowStyle}>
         <Text style={styles.textSubHeading}>City:</Text>
-        <Text style={styles.textHeading}>Kakinada</Text>
+        <Text style={styles.textHeading}>{city}</Text>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={styles.rowStyle}>
           <Text style={styles.textSubHeading}>Need:</Text>
-          <Text style={styles.textHeading}>O+</Text>
+          <Text style={styles.textHeading}>{bloodType}</Text>
         </View>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row-reverse",  }}>
           <TouchableOpacity
             style={[styles.btnContainer, { backgroundColor: colors.green }]}
           >
             <Text style={styles.btnTextHelp}> Help</Text>
           </TouchableOpacity>
           {
-            donationType === "request-for-donor" && (
+            donationType === "request-for-donor" ? (
               <TouchableOpacity
                 style={[styles.btnContainer]}
               >
                 <Text style={styles.btnDenyText}> Deny</Text>
               </TouchableOpacity>
+            ) : (
+              userId === user?.id && (
+                <TouchableOpacity
+                style={[styles.btnContainer]}
+              >
+                <Text style={styles.btnDenyText}> Cancel</Text>
+              </TouchableOpacity>
+              )
             )
           }
         </View>
@@ -88,6 +102,7 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
+    columnGap: 5,
     
   },
   profileContainer: {

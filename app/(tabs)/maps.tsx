@@ -37,6 +37,8 @@ export default function TabTwoScreen() {
   const [location, setLocation] = useState(null);
 
   const requestLocationPermission = async () => {
+
+    // Request permission to access the user's location
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       // Handle permission denial
@@ -62,7 +64,7 @@ export default function TabTwoScreen() {
 
   const mapRef = useRef<any>();
   const navigation = useNavigation();
-  const [coords, setCoords] = useState<Location.LocationObjectCoords>();
+  const [coords, setCoords] = useState<Location.LocationObjectCoords>(); // get user coords in a particulr area
   const user = useUserStore((state) => state.user);
 
   // modal state
@@ -74,12 +76,15 @@ export default function TabTwoScreen() {
 
   // TODO: Add a button to navigate to my current location
   const navigateToMyCurrentLocation = async () => {
+
+
     // get my current location
     const location = await Location.getCurrentPositionAsync({});
     const { coords } = location;
     setCoords(coords);
     console.log(coords);
 
+    // animate the map to my current location
     mapRef.current?.animateToRegion(
       {
         latitude: coords.latitude,
@@ -132,19 +137,22 @@ export default function TabTwoScreen() {
       >
         {usersCoords?.map(
           (_user: UserCoordsDetails) =>
-            _user.id !== user?.id && (
-              <Marker
-                key={_user.id}
+            _user?.id !== user?.id && (
+              _user?.coords?.lat && _user?.coords?.lng && (
+                <Marker
+                key={_user?.id}
                 coordinate={{
-                  latitude: parseFloat(_user.coords.lat),
-                  longitude: parseFloat(_user.coords.lng),
+                  latitude: parseFloat(_user?.coords?.lat),
+                  longitude: parseFloat(_user?.coords?.lng),
                 }}
-                title={_user.fullName}
-                description={_user.bloodType}
+                title={_user?.fullName}
+                description={_user?.bloodType}
                 onPress={() => onMarkerPress(_user)}
               />
+              )
             )
         )}
+        
       </MapView>
       <TouchableOpacity
         style={styles.addMyLocationButton}
