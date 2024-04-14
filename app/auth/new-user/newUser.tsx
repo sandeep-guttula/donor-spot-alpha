@@ -27,6 +27,8 @@ import { colors } from "@/constants/Colors";
 import { addUser } from "@/gql/user_queries";
 import { router } from "expo-router";
 import PhoneInput, { ICountry } from "react-native-international-phone-number";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const newUser = () => {
   const [fullName, setFullName] = useState("");
@@ -261,7 +263,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
-    height: 150,
+    height: hp('20%'),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -281,7 +283,7 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 20,
     width: "85%",
-    gap: 20,
+    gap: hp('1.5%'),
   },
   inputContainer: {
     justifyContent: "center",
@@ -289,12 +291,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   input: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: hp('1.2%'),
+    paddingHorizontal: wp('5%'),
     borderRadius: 7,
     borderColor: "gray",
     borderWidth: 0.5,
-    width: "100%",
+    width: wp('85%'),
   },
   inputText: {
     fontWeight: "800",
@@ -304,8 +306,8 @@ const styles = StyleSheet.create({
   },
   primaryButtonStyle: {
     backgroundColor: colors.primary,
-    height: 50,
-    width: 360,
+    height: hp('6%'),
+    width: wp('85%'),
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: "white",
     fontWeight: "800",
-    fontSize: 18,
+    fontSize: hp('2.5%'),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -323,8 +325,8 @@ const styles = StyleSheet.create({
   phoneInput: {
     marginBottom: 20,
     borderRadius: 5,
-    padding: 12,
-    paddingVertical: 15,
+    padding: 10,
+    paddingVertical: hp('1.5%'),
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: colors.borderGray,

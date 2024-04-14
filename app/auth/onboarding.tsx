@@ -11,6 +11,7 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import { colors } from "@/constants/Colors";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
 
 const onboarding = () => {
   return (

@@ -87,6 +87,51 @@ const getALlUsersCoordsQuery = `
   }
 `
 
+const addDonationInYourAreaMutation = `
+mutation AddDonation($userId: ID!, $donationDate: String!, $donationType: String!, $bloodType: String!, $city: String) {
+  addDonation(userId: $userId, donationDate: $donationDate, donationType: $donationType, bloodType: $bloodType, city: $city) {
+    id
+  }
+}
+`
+
+const getRequestInYourAreaQuery = `
+query Donations($city: String!) {
+  donationsInYourArea(city: $city) {
+    id
+    userId
+    bloodType
+    city
+    donationDate
+    donationType  
+  }
+  users {
+    avatar
+    id
+    fullName
+  }
+}
+`
+
+const getRequestsForYouQuery = `
+query Donations($receiverId: ID!) {
+  donationRequestsForYou(receiverId: $receiverId) {
+    userId
+    receiverId
+    id
+    donationType
+    donationDate
+    bloodType
+    status
+  }
+  users {
+    id
+    avatar
+    fullName
+  }
+}
+`
+
 const getUsersName = `
   query Users {
     users {
@@ -111,7 +156,7 @@ async function getUserDataThroughFirebaseUid(firebaseUid: string) {
     })
   })
   let { data } = await response.json();
-  
+
   return data.findUserByFirebaseUID
 }
 
@@ -150,7 +195,7 @@ async function addUser(
 
   try {
 
-    console.log("Adding user to the database");    
+    console.log("Adding user to the database");
     const response = await fetch(GQL_ENDPOINT, {
       method: "POST",
       headers: {
@@ -220,7 +265,7 @@ async function updateUserCoords(id: string, lat: string, lng: string) {
   })
   let { data } = await response.json();
   console.log("Data from updateUserCoords", data);
-  
+
   return data.addUserCoords
 }
 
@@ -238,11 +283,96 @@ async function getAllUsersCoords() {
   return data.users
 }
 
-export { 
+async function addDonationInYourArea(userId: string, donationDate: string, donationType: string, bloodType: string, city: string) {
+  const response = await fetch(GQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: addDonationInYourAreaMutation,
+      variables: {
+        userId: userId,
+        donationDate: donationDate,
+        donationType: donationType,
+        bloodType: bloodType,
+        city: city
+      }
+    })
+  })
+  let { data } = await response.json();
+  return data.addDonation
+}
+
+async function getRequestInYourArea(city: string) {
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: getRequestInYourAreaQuery,
+      variables: {
+        city: city,
+      },
+    }),
+  };
+
+  try {
+    const response = await fetch(GQL_ENDPOINT, requestOptions);
+    const { data } = await response.json();
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error for handling elsewhere
+  }
+}
+
+async function getRequestsForYou(receiverId: string) {
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: getRequestsForYouQuery,
+      variables: {
+        receiverId: receiverId,
+      },
+    }),
+  };
+
+  try {
+    const response = await fetch(GQL_ENDPOINT, requestOptions);
+    const { data } = await response.json();
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+    console.log("Data from getRequestsForYou", data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error for handling elsewhere
+  }
+
+}
+
+
+export {
   isUserExist,
-  addUser, 
-  getUserDataThroughFirebaseUid, 
+  addUser,
+  getUserDataThroughFirebaseUid,
   updateActiveForDonation,
   updateUserCoords,
-  getAllUsersCoords
+  getAllUsersCoords,
+  addDonationInYourArea,
+  getRequestInYourArea,
+  getRequestsForYou
 }

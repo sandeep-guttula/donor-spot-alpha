@@ -17,6 +17,8 @@ import { colors } from "@/constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import { getUserDataThroughFirebaseUid } from "@/gql/user_queries";
 import { useUserStore } from "@/store/userStore";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const login = () => {
   const [email, setEmail] = useState("");
@@ -144,6 +146,7 @@ export default login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     // justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -157,8 +160,8 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     marginTop: 20,
-    width: 400,
-    height: 370,
+    width: wp('100%'),
+    height: hp('40%'),
   },
   link: {
     color: colors.linkBlue,
@@ -168,20 +171,20 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 20,
     width: "85%",
-    gap: 20,
+    gap: hp('1.5%')
   },
   inputContainer: {
     justifyContent: "center",
     alignItems: "center",
-    gap: 10,
+    gap: hp('1.5%'),
   },
   input: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: wp('3%'),
+    paddingHorizontal: wp('5%'),
     borderRadius: 7,
     borderColor: "gray",
     borderWidth: 0.5,
-    width: "100%",
+    width: wp('85%'),
   },
   inputText: {
     fontWeight: "800",
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     // width: "85%",
     flexDirection: "row",
-    height: 50,
+    height: hp('6.5%'),
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -204,10 +207,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   headingContainer: {
-    marginBottom: 20,
   },
   heading: {
-    fontSize: 40,
+    fontSize: hp("4%"),
     fontWeight: "bold",
     color: colors.textGray,
   },
@@ -224,7 +226,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   subHeadingText: {
-    fontSize: 30,
+    fontSize: hp("3%"),
     color: colors.textPrimary,
     fontWeight: "bold",
   },
