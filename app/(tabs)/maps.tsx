@@ -14,7 +14,7 @@ import { useNavigation } from "expo-router";
 import { Coords } from "@/types";
 import { colors } from "@/constants/Colors";
 import Modal from "react-native-modal";
-import { getAllUsersCoords, updateUserCoords } from "@/gql/user_queries";
+import { addDonationThroughMaps, getAllUsersCoords, updateUserCoords } from "@/gql/user_queries";
 import { useUserStore } from "@/store/userStore";
 
 const INITIAL_REGION = {
@@ -33,8 +33,18 @@ type UserCoordsDetails = {
   coords: Coords;
 };
 
+type SendRequestForDonationType ={
+  userId: string;
+  donationDate: string;
+  donationType: string;
+  bloodType: string;
+  reciverId: string;
+}
+
 export default function TabTwoScreen() {
   const [location, setLocation] = useState(null);
+
+  const [selectedUser, setSelectedUser] = useState<SendRequestForDonationType>()
 
   const requestLocationPermission = async () => {
 
@@ -116,12 +126,28 @@ export default function TabTwoScreen() {
     }
   };
 
+  const sendRequest = async () => {
+    console.log("Send request to user");
+    console.log(currentClickedUser);
+    const response = await addDonationThroughMaps(
+      user?.id!,
+      new Date().toISOString(),
+      "request-for-donor",
+      currentClickedUser?.bloodType!,
+      currentClickedUser?.id!
+    )
+    if(response?.id){
+      ToastAndroid.show("Request Sent", ToastAndroid.SHORT);
+    }
+    setShowAddRequestModel(false);
+  }
+
   const [showAddRequestModel, setShowAddRequestModel] = useState(false);
   const [currentClickedUser, setCurrentClickedUser] =
     useState<UserCoordsDetails>();
-  const onMarkerPress = (user: UserCoordsDetails) => {
+  const onMarkerPress = (_user: UserCoordsDetails) => {
     setShowAddRequestModel(true);
-    setCurrentClickedUser(user);
+    setCurrentClickedUser(_user);
     console.log("Marker pressed", user);
   };
 
@@ -145,8 +171,7 @@ export default function TabTwoScreen() {
                   latitude: parseFloat(_user?.coords?.lat),
                   longitude: parseFloat(_user?.coords?.lng),
                 }}
-                title={_user?.fullName}
-                description={_user?.bloodType}
+                title={_user?.bloodType}
                 onPress={() => onMarkerPress(_user)}
               />
               )
@@ -203,7 +228,7 @@ export default function TabTwoScreen() {
               <Text style={{ color: colors.primaryLight }}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => console.log("Send request")}
+              onPress={() => sendRequest()}
               style={[styles.btn, styles.save]}
             >
               <Text style={{ color: "white", fontWeight: "800" }}>Send</Text>

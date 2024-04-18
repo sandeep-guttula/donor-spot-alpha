@@ -132,6 +132,14 @@ query Donations($receiverId: ID!) {
 }
 `
 
+const addDonationThroughMapsMutation = `
+mutation AddDonation($userId: ID!, $donationDate: String!, $donationType: String!, $bloodType: String!, $receiverId: String) {
+  addDonation(userId: $userId, donationDate: $donationDate, donationType: $donationType, bloodType: $bloodType, receiverId: $receiverId) {
+    id   
+  }
+}
+`
+
 const getUsersName = `
   query Users {
     users {
@@ -364,6 +372,27 @@ async function getRequestsForYou(receiverId: string) {
 
 }
 
+async function addDonationThroughMaps(userId: string, donationDate: string, donationType: string, bloodType: string, receiverId: string) {
+  const response = await fetch(GQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: addDonationThroughMapsMutation,
+      variables: {
+        userId: userId,
+        donationDate: donationDate,
+        donationType: donationType,
+        bloodType: bloodType,
+        receiverId: receiverId
+      }
+    })
+  })
+  let { data } = await response.json();
+  return data.addDonation
+}
+
 
 export {
   isUserExist,
@@ -374,5 +403,6 @@ export {
   getAllUsersCoords,
   addDonationInYourArea,
   getRequestInYourArea,
-  getRequestsForYou
+  getRequestsForYou,
+  addDonationThroughMaps
 }
