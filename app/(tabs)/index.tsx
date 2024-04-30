@@ -91,7 +91,7 @@ export default function TabOneScreen() {
             <Text style={styles.cardTitle}>Location</Text>
             <Feather name="edit-3" size={16} color="white" />
           </View>
-          <Text style={styles.title}>Kakinada</Text>
+          <Text style={styles.title}>{user?.address?.city}</Text>
           {/* <View style={styles.separator} /> */}
 
           <View style={styles.activeDonation}>
@@ -111,7 +111,7 @@ export default function TabOneScreen() {
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
               Your Blood type
             </Text>
-            <Text style={styles.bloodType}>O+</Text>
+            <Text style={styles.bloodType}>{user?.bloodType}</Text>
           </View>
         </View>
 
